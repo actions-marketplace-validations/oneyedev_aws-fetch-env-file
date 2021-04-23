@@ -1,0 +1,23 @@
+name: 'AWS Fetch Env File'
+description: 'Fetch and Export Envrionment File from S3 for Github Workflow'
+branding:
+  icon: download-cloud
+  color: green
+inputs:
+  region:
+    description: 'AWS Region of S3 Bucket'
+    required: true
+    default: 'us-east-1'
+  bucket:
+    description: 'Name of S3 Bucket'
+    required: true
+  key:
+    description: 'Environment File Key'
+    required: true
+  mask:
+    description: 'Masked from Logs'
+    required: false
+    default: 'false'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

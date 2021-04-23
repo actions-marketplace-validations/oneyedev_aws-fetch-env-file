@@ -1,0 +1,30 @@
+{
+  "name": "@oneyedev/aws-fetch-env-file",
+  "version": "1.0.0",
+  "description": "Fetch env file from S3 for Github workflow",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-fetch-env-file.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build index.js",
+    "test": "jest"
+  },
+  "author": "oneyedev",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "aws-sdk": "^2.714.2"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0",
+    "@types/jest": "^26.0.4",
+    "dotenv": "^8.2.0",
+    "jest": "^26.1.0"
+  }
+}

@@ -1,0 +1,81 @@
+name: 'Test Pipeline'
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  env-variables:
+    name: Export environment variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Fetch AWS Environment File from S3
+        uses: oneyedev/aws-fetch-env-file@main
+        with:
+          region: ${{ secrets.AWS_REGION }}
+          bucket: ${{ secrets.AWS_BUCKET }}
+          key: ${{ secrets.AWS_SAMPLE_KEY }}
+      - name: Assert Environment Variables
+        if: ${{ env.LIFE != 'IS_GOOD' || env.KEY != 'VALUE' || env.KEY_EQUAL != 'EQUAL=EQUAL=EQUAL' || env.SENTENCE != 'LIFE IS GOOD' }}
+        run: |
+          echo "LIFE: $LIFE"
+          echo "KEY: $KEY"
+          echo "KEY_EQUAL: $KEY_EQUAL"
+          echo "SENTENCE: $SENTENCE"
+          echo "::error ::Assert Fails"
+          exit 1
+  outputs:
+    name: Export step outputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Fetch AWS Environment File from S3
+        id: fetch
+        uses: oneyedev/aws-fetch-env-file@main
+        with:
+          region: ${{ secrets.AWS_REGION }}
+          bucket: ${{ secrets.AWS_BUCKET }}
+          key: ${{ secrets.AWS_SAMPLE_KEY }}
+      - name: Assert Step Outputs
+        if: ${{ steps.fetch.outputs.LIFE != 'IS_GOOD' || steps.fetch.KEY != 'VALUE' || steps.fetch.KEY_EQUAL != 'EQUAL=EQUAL=EQUAL' || steps.fetch.SENTENCE != 'LIFE IS GOOD' }}
+        run: |
+          echo "LIFE: ${{ steps.fetch.outputs.LIFE }}"
+          echo "KEY: ${{ steps.fetch.outputs.KEY  }}"
+          echo "KEY_EQUAL: ${{ steps.fetch.outputs.KEY_EQUAL }}"
+          echo "SENTENCE: ${{ steps.fetch.outputs.SENTENCE  }}"
+          echo "::error ::Assert Fails"
+          exit 1
+  mask:
+    name: Mask from logs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Fetch AWS Environment File from S3
+        id: fetch
+        uses: oneyedev/aws-fetch-env-file@main
+        with:
+          region: ${{ secrets.AWS_REGION }}
+          bucket: ${{ secrets.AWS_BUCKET }}
+          key: ${{ secrets.AWS_SAMPLE_KEY }}
+          mask: true
+      - name: Mask Manual Test
+        run: |
+          echo "SHOUD_BE_MASKED: ${{ steps.fetch.outputs.LIFE }}"
+          echo "SHOUD_BE_MASKED: ${{ env.LIFE }}"
