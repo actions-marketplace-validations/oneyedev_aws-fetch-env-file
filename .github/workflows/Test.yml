@@ -49,7 +49,7 @@ jobs:
           bucket: ${{ secrets.AWS_BUCKET }}
           key: ${{ secrets.AWS_SAMPLE_KEY }}
       - name: Assert Step Outputs
-        if: ${{ steps.fetch.outputs.LIFE != 'IS_GOOD' || steps.fetch.KEY != 'VALUE' || steps.fetch.KEY_EQUAL != 'EQUAL=EQUAL=EQUAL' || steps.fetch.SENTENCE != 'LIFE IS GOOD' }}
+        if: ${{ steps.fetch.outputs.LIFE != 'IS_GOOD' || steps.fetch.outputs.KEY != 'VALUE' || steps.fetch.outputs.KEY_EQUAL != 'EQUAL=EQUAL=EQUAL' || steps.fetch.outputs.SENTENCE != 'LIFE IS GOOD' }}
         run: |
           echo "LIFE: ${{ steps.fetch.outputs.LIFE }}"
           echo "KEY: ${{ steps.fetch.outputs.KEY  }}"
