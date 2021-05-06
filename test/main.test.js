@@ -21,13 +21,13 @@ describe('fetch env file test', () => {
     })
     const env = fs.readFileSync('./sample.env').toString('utf-8')
     expect(env).toBe(
-      `LIFE=IS_GOOD\nKEY=VALUE\nKEY_EQUAL=EQUAL=EQUAL=EQUAL\nSENTENCE=LIFE IS GOOD`
+      `LIFE=IS_GOOD\nKEY=VALUE\nKEY_EQUAL=EQUAL=EQUAL=EQUAL\nSENTENCE=LIFE IS GOOD\nEMPTY=`
     )
   })
 
   it('parse env file', async () => {
     // given
-    const str = `LIFE=IS_GOOD\nKEY=VALUE\nKEY_EQUAL=EQUAL=EQUAL=EQUAL\nSENTENCE=LIFE IS GOOD`
+    const str = `LIFE=IS_GOOD\nKEY=VALUE\nKEY_EQUAL=EQUAL=EQUAL=EQUAL\nSENTENCE=LIFE IS GOOD\nEMPTY=`
 
     // when
     const entries = main.parseEnvFile(str)
@@ -42,6 +42,10 @@ describe('fetch env file test', () => {
     expect(entries[3]).toStrictEqual({
       key: 'SENTENCE',
       value: 'LIFE IS GOOD',
+    })
+    expect(entries[4]).toStrictEqual({
+      key: 'EMPTY',
+      value: '',
     })
   })
 })

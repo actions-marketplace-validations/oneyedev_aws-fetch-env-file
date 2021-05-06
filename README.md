@@ -13,7 +13,7 @@ Fetch a environment file from AWS S3. And use environment variables or outputs i
     aws-region: <<YOUR_S3_REGION>>
 - name: Fetch environment file and export variables
   id: fetch-env-file
-  uses: oneyedev/aws-fetch-env-file@v1
+  uses: oneyedev/aws-fetch-env-file@v2
   with:
     region: <<YOUR_S3_REGION>>
     bucket: <<YOUR_S3_BUCKET>>

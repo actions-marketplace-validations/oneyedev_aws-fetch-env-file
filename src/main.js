@@ -22,7 +22,7 @@ module.exports = {
     return response.Body.toString('utf-8')
   },
   parseEnvFile(str = '') {
-    const regex = /([^\s=]+)=(.+)/gm
+    const regex = /([^\s=]+)=(.*)/gm
     const result = []
     let arr
     while ((arr = regex.exec(str)) != null) {
